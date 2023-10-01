@@ -32,6 +32,15 @@ Comandos del Servidor:
 
 
 
+--- Ambiente de Desarrollo ---
+Version de Node: 
+
+Para instalar el nvm (Node version manager) -> curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash
+Instalar la ultima version de node -> nvm install node
+verificar la version instalada de node -> node -v
+
+
+
 
 Esta es nuestra aplicacion para el proyecto final de Desarrollo de Aplicaciones Web.
 Autores:
