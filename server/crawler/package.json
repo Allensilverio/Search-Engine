@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "jsdom": "^22.1.0"
+    "jsdom": "^22.1.0",
+    "perf_hooks": "^0.0.1"
   }
 }

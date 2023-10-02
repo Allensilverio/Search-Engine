@@ -5,19 +5,38 @@ import getMetaData from 'metadata-scraper';
 
 const app = Express();
 
-async function extractPageMetadata() {
-	const url = 'https://www.amazon.es/'
+async function extractPageMetadata(url) {
 	const { 
        title,
        description,
        language,
        keywords,
        author,
-       publised,
+       published,
        image,
        icon
     } = await getMetaData(url);
+
+    return {
+        title,
+        description,
+        language,
+        keywords,
+        author,
+        published,
+        image,
+        icon
+    };
+
 }
+
+const objResponse = await extractPageMetadata('https://www.youtube.com/')
+
+
+
+
+
+
 
 
 // APP PORT
