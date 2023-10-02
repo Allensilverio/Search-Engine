@@ -48,3 +48,4 @@ export default function SearchList({ totalResultados }) {
         </div>
     )
 }
+
