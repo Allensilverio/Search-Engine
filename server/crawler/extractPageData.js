@@ -39,6 +39,7 @@ async function extractPageMetadata(url) {
         //console.log(`The page took ${loadTime} milliseconds to load.`);
 
         return {
+            url,
             title,
             description,
             language,
@@ -54,7 +55,7 @@ async function extractPageMetadata(url) {
 }
 
 (async () => {
-    const objResponse = await extractPageMetadata("https://www.wikipedia.com/");
+    const objResponse = await extractPageMetadata("https://www.amazon.com/");
     console.log(objResponse);
 })();
 
