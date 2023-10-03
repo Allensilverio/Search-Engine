@@ -55,7 +55,7 @@ async function extractPageMetadata(url) {
 }
 
 (async () => {
-    const objResponse = await extractPageMetadata("https://www.amazon.com/");
+    const objResponse = await extractPageMetadata("https://www.wikipedia.com/");
     console.log(objResponse);
 })();
 

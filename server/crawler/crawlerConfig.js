@@ -49,6 +49,8 @@ export default async function crawlPage(baseURL, currentURL, pages) {
 
 }
 
+crawlPage("https://www.wikipedia.com/", "https://www.wikipedia.com/", {})
+
 function getURLsFromHTML(htmlBody, baseURL){
     const urls = [];
     const dom = new JSDOM(htmlBody);
