@@ -3,12 +3,12 @@ import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider} f
 import Container from './components/Container';
 import SearchList from './pages/SearchList';
 
-export default function App(props) {
+export default function App() {
     const router = createBrowserRouter(
         createRoutesFromElements(
           <Route>
             <Route path="/" element={<Container />}/>
-            <Route path="/searchlist" element={<SearchList totalResultados={3500000} />}/>
+            <Route path="/searchlist" element={<SearchList />}/>
           </Route>
         )
     );

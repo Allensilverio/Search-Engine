@@ -1,26 +1,35 @@
 import React from 'react'
+import { useRandomLinkGenerator } from '../hooks/useGenerateRandomLinks';
+
 
 export default function WebsiteCard() {
+const { randomLinks, regenerateRandomLinks } = useRandomLinkGenerator(1); // Generar 10 enlaces iniciales
+const handleGenerateLinks = () => {
+  regenerateRandomLinks();
+};
+
   return (
     <div>
-        
-        <div className='flex flex-row space-x-3 '>
+      {randomLinks.map((link, index) => (
+        <div key={index}>
+        <div className='flex flex-row space-x-3 pl-0 '>
             <div className='bg-white w-[48px] h-[48px] rounded-3xl '></div>
             <div className='flex flex-col justify-left'>
-                <h1 className='text-[14x] font-poppins font-regular text-white'>La pagina</h1>
-                <p className='text-[14px] text-white'> https://www.hola.com/</p>
+                <h1 className='text-[14x] font-poppins font-regular text-white'>{link.title}</h1>
+                <p className='text-[14px] text-white'> {link.url}</p>
             </div>
         </div>
         <div className='my-1'>
             <ul>
             <li>
-            <h1 className='text-[15px] text-Rosado my-2 hover:underline hover:cursor-pointer' >HOLA.com, diario de actualidad, moda y belleza</h1>
+            <h1 className='text-[15px] text-Rosado my-2 hover:underline hover:cursor-pointer' >{link.url2}</h1>
             </li>
             </ul>
-
-            <p className='text-[12px] text-white'>Número 1 en actualidad y tendencias de moda, belleza y estilo de vida.  Noticias diarias sobre las estrellas de cine, la música, tendencias de moda, ...</p>
-
+            <p className='text-[12px] text-white'>{link.description}</p>
         </div>
+        </div>
+      ))}
+
     </div>
   )
 }
