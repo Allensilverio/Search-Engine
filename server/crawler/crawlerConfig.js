@@ -49,7 +49,7 @@ export default async function crawlPage(baseURL, currentURL, pages) {
 
 }
 
-crawlPage("https://www.wikipedia.com/", "https://www.wikipedia.com/", {})
+crawlPage("https://www.tripadvisor.com/Hotels", "https://www.tripadvisor.com/Hotels", {})
 
 function getURLsFromHTML(htmlBody, baseURL){
     const urls = [];
