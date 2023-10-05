@@ -1,4 +1,4 @@
--- Active: 1691799065576@@127.0.0.1@3306@Buscador
+-- Active: 1696545196155@@127.0.0.1@3306@buscador
 
 -- Create DB
 create database Buscador;
@@ -115,4 +115,4 @@ BEGIN
 END;
 
 
-CALL spSearchPage('social', 0, 2)
+CALL spSearchPage('social', 0, 15)
