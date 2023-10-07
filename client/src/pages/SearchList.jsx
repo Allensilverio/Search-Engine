@@ -1,10 +1,22 @@
-import React from 'react'
+import React, {useState} from 'react'
 import WebsiteCard from '../components/WebsiteCard'
-import { useRandomLinkGenerator } from '../hooks/useGenerateRandomLinks'; 
+import { useRandomLinkGenerator } from '../hooks/useGenerateRandomLinks'
+import  useWebSearch  from '../hooks/useWebSearch'
 
 
 export default function SearchList() {
-    const { randomLinks } = useRandomLinkGenerator(20);
+    const { randomLinks } = useRandomLinkGenerator(4);
+    const [searchTerm, setSearchTerm] = useState('')
+    const [startRowIndex, setStartRowIndex] = useState(0)
+    const [maximumRows, setMaximumRows] = useState(10)
+
+    function handleSearch(e) {   
+        setSearchTerm(e.target.value)
+        setStartRowIndex(0)
+        setMaximumRows(10)
+    }
+
+    useWebSearch(searchTerm, startRowIndex, maximumRows)
 
 
     return (
@@ -31,7 +43,9 @@ export default function SearchList() {
 
                         <input
                             type='text'
+                            onChange={handleSearch}
                             className='bg-white/20 flex items-center justify-center px-3 py-2 rounded-2xl pr-96 pl-10 focus:outline-none text-white/70'
+
                         />
                     </div>
                 </form>

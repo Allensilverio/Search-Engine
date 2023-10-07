@@ -1,17 +1,25 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 
-export default function useWebSearch(query, pageNumber) { //query es cualquier cosa que se escriba en el buscador
-  useEffect(() => {
-    axios({
-        method: 'GET',
-        // API URL Y PARAMETROS DE LA API
-    }).then(res => {
-        console.log(res.data)
-    })
+export default function useWebSearch(searchTerm, startRowIndex, maximumRows) {
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.get('/api/datos', {
+                    params: {
+                        criterio: searchTerm,
+                        startRowIndex: startRowIndex,
+                        maximumRows: maximumRows
+                    }
+                });
+                console.log(response.data);
+            } catch (error) {
+                console.error(error);
+            }
+        };
 
-  }, [query, pageNumber]) //cada vez que cambie la query o el numero de pagina, se ejecuta el useEffect
-    return (
-    <div>useWebSearch</div>
-  )
+        fetchData();
+    }, [searchTerm, startRowIndex, maximumRows]);
+
+    return null;
 }
