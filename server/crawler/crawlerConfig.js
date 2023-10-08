@@ -52,7 +52,7 @@ async function crawlPage(baseURL, currentURL, pages) {
     }
 }
 
-async function startCrawling(startURL, pages) {
+export async function startCrawling(startURL, pages) {
     try {
         const timeoutWatcher = setInterval(() => {
             const currentTime = Date.now() - lastLogTime;
@@ -100,9 +100,9 @@ function getURLsFromHTML(htmlBody, baseURL) {
 }
 
 function normalizeURL(urlObject) {
-    const hostPath = `${urlObject.hostname}${urlObject.pathname}`;
+    const hostPath = `${urlObject.protocol}${urlObject.hostname}${urlObject.pathname}`;
     return hostPath.endsWith('/') ? hostPath.slice(0, -1) : hostPath;
 }
 
 // Start the crawling process
-startCrawling("https://midu.dev/", objPages);
+// startCrawling("https://www.intec.edu.do/", objPages);

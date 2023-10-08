@@ -1,12 +1,29 @@
-// EJECUCION 
-import crawlPage from "./crawlerConfig.js";
+import {startCrawling} from './crawlerConfig.js';
+import { extractPageMetadata } from './extractPageData.js';
 
-const testURL = 'https://www.ikea.com.do/';
+
+
+let objPages = {};
+
+await startCrawling("https://www.reactjs.wiki/", objPages);
+
+await Promise.all(Object.keys(objPages).map(async url => {
+    const metadata = await extractPageMetadata(url);
+    if (metadata) {
+        objPages[url] = metadata;
+    }
+}));
+
+
+
+
 
 // Create a queue to start from a set of base URL for the crawling
+
+
+// await startCrawling("https://bocao.com.do/", objPages);
 
 // Create a function that inserts in the database every crawled page with the data from extractPageData
 
 
-const pages = await crawlPage(testURL, testURL, {});
 

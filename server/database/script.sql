@@ -1,4 +1,4 @@
--- Active: 1696545196155@@127.0.0.1@3306@buscador
+-- Active: 1691799065576@@127.0.0.1@3306@Buscador
 
 -- Create DB
 create database Buscador;
@@ -99,7 +99,8 @@ BEGIN
         Url, 
         Title, 
         Description, 
-        Keywords
+        Keywords,
+        Icon 
     FROM 
         Pages 
     WHERE 
