@@ -10,12 +10,17 @@ app.get('/api/datos', (req, res) => {
     const criterio = req.query.criterio;
     const startRowIndex = req.query.startRowIndex;
     const maximumRows = req.query.maximumRows;
-  
+    console.log(req.query.criterio);
+    console.log(req.query.startRowIndex);
+    console.log(req.query.maximumRows);
+
+
+
     // Verifica si se proporcionaron los tres valores en la consulta
-    if (!criterio || !startRowIndex || !maximumRows) {
+    /*if (!criterio || !startRowIndex || !maximumRows) {
       res.status(400).json({ error: 'Se requieren tres valores para la búsqueda' });
       return;
-    }
+    }*/
   
     // Llama al stored procedure con los tres valores proporcionados
     connection.query('CALL spSearchPage(?, ?, ?)', [criterio, startRowIndex, maximumRows], (err, results) => {
@@ -28,5 +33,4 @@ app.get('/api/datos', (req, res) => {
       }
     });
   });
-
 app.listen(3500, () => console.log('Server ready in port 3000!'));

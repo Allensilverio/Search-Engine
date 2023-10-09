@@ -1,18 +1,18 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import WebsiteCard from '../components/WebsiteCard'
-import { useRandomLinkGenerator } from '../hooks/useGenerateRandomLinks'
-import  useWebSearch  from '../hooks/useWebSearch'
+import useWebSearch from '../hooks/useWebSearch'
 
 
 export default function SearchList() {
-    const { randomLinks } = useRandomLinkGenerator(4);
     const [searchTerm, setSearchTerm] = useState('')
     const [startRowIndex, setStartRowIndex] = useState(0)
     const [maximumRows, setMaximumRows] = useState(10)
+    const searchResults = useWebSearch(searchTerm, startRowIndex, maximumRows);
 
-    function handleSearch(e) {   
-        setSearchTerm(e.target.value)
-        setStartRowIndex(0)
+
+    function handleSearch(event) {
+        setSearchTerm(event.target.value) //se actuialoza el estado con el valor del input
+        setStartRowIndex(0) // se establecen valores iniciales 
         setMaximumRows(10)
     }
 
@@ -44,6 +44,7 @@ export default function SearchList() {
                         <input
                             type='text'
                             onChange={handleSearch}
+                            value={searchTerm}
                             className='bg-white/20 flex items-center justify-center px-3 py-2 rounded-2xl pr-96 pl-10 focus:outline-none text-white/70'
 
                         />
@@ -52,21 +53,22 @@ export default function SearchList() {
             </div>
             <div className='w-full space-y-2'>
                 <hr className=' border-white/10' />
-                <p className='text-white/70 text-[14px]'>Se han encontrado {randomLinks.length} resultados</p>
+                <p className='text-white/70 text-[14px]'>Se han encontrado resultados</p>
 
             </div>
 
 
             <div className='space-y-4 mt-8 pl-0 w-full max-h-[500px]'>
-            {randomLinks.map((link, index) => (
-          <WebsiteCard
-            key={index}
-            title={link.title}
-            url={link.url}
-            url2 = {link.url2}
-            description={link.description}
-          />
-        ))}
+                {searchResults.map((result, index) => (
+                    <WebsiteCard
+                        key={index}
+                        title={result.Title}
+                        url={result.Url}
+                        url2={result.Keywords}
+                        description={result.Description}
+                        icon={result.Icon}
+                    />
+                ))}
             </div>
         </div>
     )
