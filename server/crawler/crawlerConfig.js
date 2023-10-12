@@ -9,7 +9,7 @@ function logTimeValidation(arg, time) {
     console.log(arg);
 }
 
-async function crawlPage(baseURL, currentURL, pages) {
+export async function crawlPage(baseURL, currentURL, pages) {
     baseURL = new URL(baseURL);
     currentURL = new URL(currentURL);
 
@@ -52,27 +52,29 @@ async function crawlPage(baseURL, currentURL, pages) {
     }
 }
 
-export async function startCrawling(startURL, pages) {
-    try {
-        const timeoutWatcher = setInterval(() => {
-            const currentTime = Date.now() - lastLogTime;
-            if (currentTime > 10000) {
-                console.log('No logs for 10 seconds. Stopping...');
-                clearInterval(timeoutWatcher);
-                console.log(pages);
-                process.exit(0);
-            }
-        }, 5000);
+// export async function startCrawling(startURL, pages) {
+//     try {
+//         const timeoutWatcher = setInterval(() => {
+//             const currentTime = Date.now() - lastLogTime;
+//             if (currentTime > 10000) {
+//                 console.log('No logs for 10 seconds. Stopping...');
+//                 clearInterval(timeoutWatcher);
+//                 //console.log(pages);
+//                 return pages;
+//                 // process.exit(0);
+//             }
+//         }, 5000);
 
-        const crawledPages = await crawlPage(startURL, startURL, pages);
-        console.log(crawledPages);
-        clearInterval(timeoutWatcher);
-        process.exit(0);
-    } catch (error) {
-        //console.error("An error occurred:", error);
-        process.exit(1);
-    }
-}
+//         const crawledPages = await crawlPage(startURL, startURL, pages);
+//         console.log(crawledPages);
+//         clearInterval(timeoutWatcher);
+//         return crawledPages;
+
+//     } catch (error) {
+//         //console.error("An error occurred:", error);
+//         process.exit(1);
+//     }
+// }
 
 function getURLsFromHTML(htmlBody, baseURL) {
     const urls = [];
@@ -100,9 +102,9 @@ function getURLsFromHTML(htmlBody, baseURL) {
 }
 
 function normalizeURL(urlObject) {
-    const hostPath = `${urlObject.protocol}${urlObject.hostname}${urlObject.pathname}`;
+    const hostPath = `${urlObject.protocol}//${urlObject.hostname}${urlObject.pathname}`;
     return hostPath.endsWith('/') ? hostPath.slice(0, -1) : hostPath;
 }
 
 // Start the crawling process
-// startCrawling("https://www.intec.edu.do/", objPages);
+// startCrawling("https://www.w3schools.com/cs/index.php", objPages);

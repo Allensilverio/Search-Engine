@@ -1,17 +1,17 @@
-import {startCrawling} from './crawlerConfig.js';
+import {crawlPage} from './crawlerConfig.js';
 import { extractPageMetadata } from './extractPageData.js';
+import {}
 
 
 
 let objPages = {};
 
-await startCrawling("https://www.reactjs.wiki/", objPages);
+await crawlPage("https://www.reactjs.wiki/","https://www.reactjs.wiki/", objPages);
 
 await Promise.all(Object.keys(objPages).map(async url => {
-    const metadata = await extractPageMetadata(url);
-    if (metadata) {
-        objPages[url] = metadata;
-    }
+    const allPagesMetadata = await extractPageMetadata(url);
+    console.log(allPagesMetadata);
+    
 }));
 
 
