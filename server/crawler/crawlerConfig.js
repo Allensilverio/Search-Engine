@@ -117,4 +117,4 @@ function normalizeURL(urlObject) {
 }
 
 // Start the crawling process
-startCrawling("https://www.dominicantours.com.do/turismo.html", objPages);
+// startCrawling("https://www.dominicantours.com.do/turismo.html", objPages);
