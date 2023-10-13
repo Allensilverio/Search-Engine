@@ -5,16 +5,16 @@ dotenv.config();
 
 const connector = new Connector();
 const clientOpts = await connector.getOptions({
-    instanceConnectionName: 'augmented-works-401916:us-central1:search-engine1',
+    instanceConnectionName: process.env.INSTANCE_NAME,
     ipType: 'PUBLIC',
 });
 
 const connection = mysql.createConnection({
     ...clientOpts,
-    user: 'root',
+    user: process.env.DB_USER,
     password: '',
-    database: 'buscador',
-    host: '34.16.39.221'
+    database: process.env.DB_NAME,
+    host: process.env.DB_HOST,
 });
 
 connection.connect((err) => {
