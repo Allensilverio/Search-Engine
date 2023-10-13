@@ -13,7 +13,7 @@ const cache = getExpeditiousCache({
 
 app.use(cache);
 
-app.get('/api/datos', cache.withTtl('5 minutes'), (req, res) => {
+app.get('/api/datos', (req, res) => {
   // Obtiene los valores de los parámetros de consulta desde la URL
   const criterio = req.query.criterio;
   const startRowIndex = req.query.startRowIndex;

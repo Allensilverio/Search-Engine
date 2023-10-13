@@ -1,4 +1,4 @@
--- Active: 1691799065576@@127.0.0.1@3306@Buscador
+-- Active: 1696475697965@@127.0.0.1@3306@buscador
 
 -- Create DB
 create database Buscador;
@@ -116,12 +116,59 @@ BEGIN
         startRowIndex, maximumRows;
 END //
 DELIMITER ;
+DELIMITER //
+CREATE PROCEDURE spSearchPage(
+    IN criterio VARCHAR(255),
+    IN startRowIndex INT,
+    IN maximumRows INT
+)
+BEGIN
+    -- Crear una tabla temporal para almacenar resultados
+    CREATE TEMPORARY TABLE TempResults (
+        Url VARCHAR(255),
+        Title VARCHAR(255),
+        Description TEXT,
+        Keywords VARCHAR(255),
+        Icon VARCHAR(255)
+    );
+    
+    -- Dividir el criterio en palabras clave
+    SET @words = REPLACE(criterio, ' ', '|');
+    
+    -- Realizar una búsqueda de palabras clave en las columnas URL, Title, Description y Keywords
+    INSERT INTO TempResults
+    SELECT 
+        Url, 
+        Title, 
+        Description, 
+        Keywords,
+        Icon 
+    FROM 
+        Pages 
+    WHERE 
+        CONCAT(Url, Title, Description, Keywords) REGEXP @words
+        OR SOUNDEX(Url) = SOUNDEX(criterio)
+        OR SOUNDEX(Title) = SOUNDEX(criterio)
+        OR SOUNDEX(Description) = SOUNDEX(criterio)
+        OR SOUNDEX(Keywords) = SOUNDEX(criterio)
+    ORDER BY 
+        Seo_Rating DESC;
+    
+    -- Devolver los resultados paginados
+    SELECT * FROM TempResults
+    LIMIT startRowIndex, maximumRows;
+    
+    -- Eliminar la tabla temporal
+    DROP TEMPORARY TABLE IF EXISTS TempResults;
+END 
+DELIMITER ;
 
 <<<<<<< HEAD
 
 CALL spSearchPage('a', 0, 15)
 =======
-CALL spSearchPage('social', 0, 15);
+
+CALL spSearchPage('twitter', 0, 20);
 
 
 DROP PROCEDURE IF EXISTS spSearchPage;
