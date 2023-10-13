@@ -158,7 +158,7 @@ export default function SearchListFinal() {
         <p className="text-white/70 text-[14px]">Se han encontrado  {searchResults.length} resultados</p>
       </div>
 
-      <div className="space-y-4 w-full max-h-[500px]">{searchResults.map((result, index) => (
+      <div className="space-y-4 w-fit">{searchResults.map((result, index) => (
             <WebsiteCard
               key={index}
               Title={result.Title}
