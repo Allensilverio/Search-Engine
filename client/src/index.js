@@ -7,6 +7,7 @@ import { ClerkProvider, SignIn, SignUp, SignedIn, SignedOut, RedirectToSignIn } 
 import { useNavigate, Routes, Route, BrowserRouter} from 'react-router-dom';
 import Container from './components/Container';
 import ProtectedPage from './ProtectedPage';
+import SearchListFinal from './pages/SearchListFinal';
  
 if (!process.env.REACT_APP_CLERK_PUBLISHABLE_KEY) {
   throw new Error("Missing Publishable Key")
@@ -26,16 +27,17 @@ function ClerkProviderWithRoutes() {
 
       <Routes>
       <Route path="/" element={<App />} />
+      <Route path="/searchlistfinal" element={<SearchListFinal />}/>
       <Route
           path="/sign-in/*"
-          element={<SignIn redirectUrl={'/Protected'} routing="path" path="/sign-in" />}
+          element={<SignIn redirectUrl={'/home'} routing="path" path="/sign-in" />}
         />
         <Route
           path="/sign-up/*"
-          element={<SignUp redirectUrl={'/Protected'} routing="path" path="/sign-up" />}
+          element={<SignUp redirectUrl={'/home'} routing="path" path="/sign-up" />}
         />
                 <Route
-          path="/Protected"
+          path="/home"
           element={
           <>
             <SignedIn>

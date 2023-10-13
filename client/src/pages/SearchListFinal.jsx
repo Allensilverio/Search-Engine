@@ -4,15 +4,24 @@ import MyLoader from '../components/MyLoader';
 import { useLocation } from 'react-router-dom';
 
 // Estados
+function useQuery() {
+  const{search} = useLocation();
+    return React.useMemo(() => new URLSearchParams(search), [search]);
+  }
 
 export default function SearchListFinal() {
 
-    const [searchTerm, setSearchTerm] = useState('');
+    const queryParams = useQuery();
+    const location = useLocation();
     const [startRowIndex, setStartRowIndex] = useState(0); // index inicial
     const [maximumRows, setMaximumRows] = useState(10); // Maxima cantidad de filas
     const [isLoading, setIsLoading] = useState(false); // Estado para controlar la carga adicional de resultados
-    // const [hasMoreResults, setHasMoreResults] = useState(true); // Estado para controlar si hay más resultados
     const [searchResults, setSearchResults] = useState([]);
+    const searchTermFromURL = queryParams.get('criterio') || ''; // Obtén el valor del query parameter 'query'  
+    const [searchTerm, setSearchTerm] = useState(searchTermFromURL);
+    const [initialSearchDone, setInitialSearchDone] = useState(false);
+
+
 
     // Setear el valor del estado search Term
 
@@ -35,6 +44,22 @@ export default function SearchListFinal() {
     
     // Hacer busqueda cuando hace Enter (form submit)
 
+    const firstSearch = async (e) => {
+        try {
+            const data = await fetchData(searchTerm, startRowIndex, maximumRows);
+            setSearchResults(data);
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    useEffect(() => {
+      if (!initialSearchDone) {
+        firstSearch();
+        setInitialSearchDone(true);
+      }
+    }, [initialSearchDone]);
+  
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
@@ -120,6 +145,7 @@ export default function SearchListFinal() {
 
             <input
               type="text"
+              value={searchTerm}
               onChange={(e) => handleSearch(e)}
               className="bg-white/20 flex items-center justify-center px-3 py-2 rounded-2xl pr-96 pl-10 focus:outline-none text-white/70"
             />
