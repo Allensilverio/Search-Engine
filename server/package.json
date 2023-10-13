@@ -20,12 +20,15 @@
   },
   "homepage": "https://github.com/Allensilverio/Search-Engine#readme",
   "dependencies": {
+    "@google-cloud/cloud-sql-connector": "^1.1.0",
     "axios": "^1.5.1",
     "cheerio": "^1.0.0-rc.12",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
+    "express-expeditious": "^5.1.1",
     "jsdom": "^22.1.0",
     "metadata-scraper": "^0.2.61",
-    "mysql2": "^3.6.1"
+    "mysql2": "^3.6.1",
+    "response-time": "^2.3.2"
   }
 }
