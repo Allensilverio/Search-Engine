@@ -1,7 +1,5 @@
-import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import WebsiteCard from '../components/WebsiteCard';
-import useWebSearch from '../hooks/useWebSearch';
 import MyLoader from '../components/MyLoader';
 import { useLocation, useNavigate } from 'react-router-dom';
 
@@ -30,7 +28,7 @@ export default function SearchList() {
     const handleScroll = () => {
       if (
         window.innerHeight + window.scrollY >=
-          document.documentElement.scrollHeight &&
+          document.documentElement.scrollHeight - 100 &&
         hasMoreResults &&
         !isLoading
       ) {
@@ -47,10 +45,21 @@ export default function SearchList() {
   }, [startRowIndex, maximumRows, isLoading, hasMoreResults]);
 
   // Función para realizar una nueva búsqueda y cargar más resultados
-  const loadMoreResults = () => {
-    setHasMoreResults(false); // Desactiva la carga adicional para evitar múltiples solicitudes
-    setStartRowIndex(startRowIndex + maximumRows); // Incrementa el índice de inicio
-    setIsLoading(false); // Reestablece el estado de carga
+  const loadMoreResults = async () => {
+    setIsLoading(true); // Comienza la carga
+    try {
+      const response = await fetch(`/api/datos?criterio=${searchTerm}&startRowIndex=${startRowIndex}&maximumRows=${maximumRows}`);
+      const data = await response.json();
+      setSearchResults([...searchResults, ...data]); // Agrega los nuevos resultados a los resultados existentes
+      setStartRowIndex(startRowIndex + maximumRows);
+      if (data.length === 0) {
+        setHasMoreResults(false); // Si no hay más resultados, desactiva la carga adicional
+      }
+    } catch (error) {
+      console.error('Error fetching data: ', error);
+    } finally {
+      setIsLoading(false); // Finaliza la carga
+    }
   };
 
   function handleSearch(event) {

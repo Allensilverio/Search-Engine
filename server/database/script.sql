@@ -1,4 +1,4 @@
--- Active: 1696545196155@@127.0.0.1@3306@buscador
+-- Active: 1691799065576@@127.0.0.1@3306@Buscador
 
 -- Create DB
 create database Buscador;
@@ -89,6 +89,7 @@ SELECT * FROM Pages where Title = p_Title;
 
 DROP PROCEDURE IF EXISTS spSearchPage;
 
+DELIMITER //
 CREATE PROCEDURE spSearchPage(
     IN criterio VARCHAR(255),
     IN startRowIndex INT,
@@ -113,9 +114,14 @@ BEGIN
         Seo_Rating DESC
     LIMIT 
         startRowIndex, maximumRows;
-END;
+END //
+DELIMITER ;
 
+<<<<<<< HEAD
 
-CALL spSearchPage('social', 0, 15)
+CALL spSearchPage('a', 0, 15)
+=======
+CALL spSearchPage('social', 0, 15);
+
 
 DROP PROCEDURE IF EXISTS spSearchPage;

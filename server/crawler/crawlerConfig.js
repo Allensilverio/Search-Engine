@@ -1,6 +1,5 @@
 import { JSDOM } from 'jsdom';
 
-
 let lastLogTime = Date.now();
 let objPages = {};
 
@@ -10,6 +9,11 @@ function logTimeValidation(arg, time) {
 }
 
 async function crawlPage(baseURL, currentURL, pages) {
+    // If the number of crawled URLs is equal or greater than 100, stop crawling further
+    if (Object.keys(pages).length >= 200) {
+        return pages;
+    }
+
     baseURL = new URL(baseURL);
     currentURL = new URL(currentURL);
 
@@ -59,15 +63,15 @@ export async function startCrawling(startURL, pages) {
             if (currentTime > 10000) {
                 console.log('No logs for 10 seconds. Stopping...');
                 clearInterval(timeoutWatcher);
-                console.log(pages);
-                process.exit(0);
+                return pages;
             }
         }, 5000);
 
         const crawledPages = await crawlPage(startURL, startURL, pages);
-        console.log(crawledPages);
+        // console.log(crawledPages);
         clearInterval(timeoutWatcher);
-        process.exit(0);
+        return crawledPages;
+
     } catch (error) {
         //console.error("An error occurred:", error);
         process.exit(1);
@@ -78,8 +82,16 @@ function getURLsFromHTML(htmlBody, baseURL) {
     const urls = [];
     const dom = new JSDOM(htmlBody);
     const linkElements = dom.window.document.querySelectorAll('a')
+    
+    const unwantedExtensions = ['.jpg', '.png', '.css', '.jpeg', '.svg'];
 
     for (const linkElement of linkElements) {
+        const hasUnwantedExtension = unwantedExtensions.some(ext => linkElement.href.endsWith(ext));
+        
+        if (hasUnwantedExtension) {
+            continue;
+        }
+
         if (linkElement.href.startsWith('/')) {
             try {
                 const urlObj = new URL(linkElement.href, baseURL);
@@ -100,9 +112,9 @@ function getURLsFromHTML(htmlBody, baseURL) {
 }
 
 function normalizeURL(urlObject) {
-    const hostPath = `${urlObject.protocol}${urlObject.hostname}${urlObject.pathname}`;
+    const hostPath = `${urlObject.protocol}//${urlObject.hostname}${urlObject.pathname}`;
     return hostPath.endsWith('/') ? hostPath.slice(0, -1) : hostPath;
 }
 
 // Start the crawling process
-// startCrawling("https://www.intec.edu.do/", objPages);
+// startCrawling("https://www.dominicantours.com.do/turismo.html", objPages);
