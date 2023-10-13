@@ -31,25 +31,24 @@ export async function extractPageMetadata(urlPage) {
 
         const seoRating = assignSeoRating({ title, description, language, keywords, icon }, loadTime);
 
-        var originalString = description;
+        var originalString = description || " ";  // Default to an empty string if description is undefined
         var cleanString = originalString.replace(/<\/?[^>]+(>|$)/g, "").replace(/\n/g, " ");
         var maxLength = 160;
         var finalDescription = cleanString.length > maxLength ?
             cleanString.slice(0, maxLength - 3) + "..." :
             cleanString;
-
-
+        if (keywords) { var arrKeywords = keywords.join(", ") }
         return {
             urlPage,
             title,
             finalDescription,
             language,
-            keywords,
+            arrKeywords,
             icon,
             seoRating
         };
     } catch (error) {
-        //console.log(`It was not possible to extract the metadata from ${urlPage}, error: ${error}`);
+        console.log(`It was not possible to extract the metadata from ${urlPage}, error: ${error}`);
         return null;
     }
 }
@@ -71,7 +70,7 @@ function assignSeoRating(objPage, loadTime) {
 
 
 // (async () => {
-//     const objResponse = await extractPageMetadata("https://www.reactjs.wiki/que-java-script-necesito-para-aprender-react");
+//     const objResponse = await extractPageMetadata("https://www.casadecampo.com.do/");
 //     console.log(objResponse);
 // })();
 

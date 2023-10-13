@@ -1,6 +1,5 @@
 import { JSDOM } from 'jsdom';
 
-
 let lastLogTime = Date.now();
 let objPages = {};
 
@@ -9,7 +8,12 @@ function logTimeValidation(arg, time) {
     console.log(arg);
 }
 
-export async function crawlPage(baseURL, currentURL, pages) {
+async function crawlPage(baseURL, currentURL, pages) {
+    // If the number of crawled URLs is equal or greater than 100, stop crawling further
+    if (Object.keys(pages).length >= 200) {
+        return pages;
+    }
+
     baseURL = new URL(baseURL);
     currentURL = new URL(currentURL);
 
@@ -52,36 +56,42 @@ export async function crawlPage(baseURL, currentURL, pages) {
     }
 }
 
-// export async function startCrawling(startURL, pages) {
-//     try {
-//         const timeoutWatcher = setInterval(() => {
-//             const currentTime = Date.now() - lastLogTime;
-//             if (currentTime > 10000) {
-//                 console.log('No logs for 10 seconds. Stopping...');
-//                 clearInterval(timeoutWatcher);
-//                 //console.log(pages);
-//                 return pages;
-//                 // process.exit(0);
-//             }
-//         }, 5000);
+export async function startCrawling(startURL, pages) {
+    try {
+        const timeoutWatcher = setInterval(() => {
+            const currentTime = Date.now() - lastLogTime;
+            if (currentTime > 10000) {
+                console.log('No logs for 10 seconds. Stopping...');
+                clearInterval(timeoutWatcher);
+                return pages;
+            }
+        }, 5000);
 
-//         const crawledPages = await crawlPage(startURL, startURL, pages);
-//         console.log(crawledPages);
-//         clearInterval(timeoutWatcher);
-//         return crawledPages;
+        const crawledPages = await crawlPage(startURL, startURL, pages);
+        // console.log(crawledPages);
+        clearInterval(timeoutWatcher);
+        return crawledPages;
 
-//     } catch (error) {
-//         //console.error("An error occurred:", error);
-//         process.exit(1);
-//     }
-// }
+    } catch (error) {
+        //console.error("An error occurred:", error);
+        process.exit(1);
+    }
+}
 
 function getURLsFromHTML(htmlBody, baseURL) {
     const urls = [];
     const dom = new JSDOM(htmlBody);
     const linkElements = dom.window.document.querySelectorAll('a')
+    
+    const unwantedExtensions = ['.jpg', '.png', '.css', '.jpeg', '.svg'];
 
     for (const linkElement of linkElements) {
+        const hasUnwantedExtension = unwantedExtensions.some(ext => linkElement.href.endsWith(ext));
+        
+        if (hasUnwantedExtension) {
+            continue;
+        }
+
         if (linkElement.href.startsWith('/')) {
             try {
                 const urlObj = new URL(linkElement.href, baseURL);
@@ -107,4 +117,4 @@ function normalizeURL(urlObject) {
 }
 
 // Start the crawling process
-// startCrawling("https://www.w3schools.com/cs/index.php", objPages);
+startCrawling("https://www.dominicantours.com.do/turismo.html", objPages);
