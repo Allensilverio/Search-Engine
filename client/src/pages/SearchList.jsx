@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import WebsiteCard from '../components/WebsiteCard';
 import useWebSearch from '../hooks/useWebSearch';
 import MyLoader from '../components/MyLoader';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 export default function SearchList() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -13,9 +13,11 @@ export default function SearchList() {
   const [hasMoreResults, setHasMoreResults] = useState(true); // Estado para controlar si hay más resultados
   const [searchResults, setSearchResults] = useState([]);
   // const searchResults = useWebSearch(searchTerm, startRowIndex, maximumRows);
+  const navigate = useNavigate();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-  const initialSearchTerm = queryParams.get('query');
+  const initialSearchTerm = queryParams.get('criterio') || '';
+  
 
 
 
@@ -59,20 +61,21 @@ export default function SearchList() {
   }
 
   const handleSubmit = async (e) => {
-
     e.preventDefault();
-
-      try {
-        // Fetch data based on the searchTerm
-        const response = await fetch(`/api/datos?criterio=${searchTerm}&startRowIndex=${startRowIndex}&maximumRows=${maximumRows}`);
-        const data = await response.json();
-        // Update the state with the fetched data
-        setSearchResults(data);
-        console.log(data)
-      } catch (error) {
-        console.error('Error fetching data: ', error);
-      }
-  }
+  
+    try {
+      // Fetch data based on the searchTerm
+      const response = await fetch(`/api/datos?criterio=${searchTerm}&startRowIndex=${startRowIndex}&maximumRows=${maximumRows}`);
+      const data = await response.json();
+      // Update the state with the fetched data
+      setSearchResults(data);
+  
+      // Update the URL to include the search term
+      navigate(`/searchlist?criterio=${searchTerm}&startRowIndex=${startRowIndex}&maximumRows=${maximumRows}`);
+    } catch (error) {
+      console.error('Error fetching data: ', error);
+    }
+  };
 
   const handleClearClick = () => {
     setSearchTerm(''); 
